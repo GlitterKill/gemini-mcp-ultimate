@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(test:*)",
+      "Bash(cat:*)"
+    ]
+  }
+}
+{
+  "env": {
+    "PATH": "C:\\Users\\glitt\\.cargo\\bin;${env:PATH}"
+  }
+}
+
