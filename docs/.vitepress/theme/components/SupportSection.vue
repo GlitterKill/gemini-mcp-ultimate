@@ -11,11 +11,11 @@
         <div class="support-text">
           <h3 class="support-title">Support Gemini MCP Tool</h3>
           <p class="support-description">
-            Does gemini-mcp-tool-patched help you?<br><br>Your support helps maintain & improve this open source project.
+            Does gemini-mcp-ultimate help you?<br><br>Your support helps maintain & improve this open source project.
           </p>
         </div>
         <a 
-          href="/gemini-mcp-tool-patched/funding" 
+          href="/gemini-mcp-ultimate/funding" 
           class="transparency-link"
           @mouseenter="handleMouseEnter"
           @mousemove="handleMouseMove"

@@ -2,7 +2,7 @@
 
 ## Natural Language Workflow Integration
 
-The gemini-mcp-tool-patched is designed to seamlessly integrate into your natural workflow with your preferred MCP compliant AI clients, achieved through carefully crafted tools and pipelines.
+The gemini-mcp-ultimate is designed to seamlessly integrate into your natural workflow with your preferred MCP compliant AI clients, achieved through carefully crafted tools and pipelines.
 
 Claude automatically decides when to use `ask-gemini` based on context:
 
@@ -27,7 +27,7 @@ flowchart LR
     subgraph main
         direction TB
         A[You] --> |"ask gemini..."| B([**Claude**])
-        B -..-> |"invokes 'ask-gemini'"| C["gemini-mcp-tool-patched"]
+        B -..-> |"invokes 'ask-gemini'"| C["gemini-mcp-ultimate"]
         C --> |"spawn!"| D[Gemini-CLI]
         D e1@-.-> |"response"| C
         C -.-> |"response"| B

@@ -5,15 +5,15 @@ export default withMermaid(
   defineConfig({
     title: 'Gemini MCP Tool Documentation',
     description: 'Bridge Gemini models with Claude Desktop',
-    base: '/gemini-mcp-tool-patched/',
+    base: '/gemini-mcp-ultimate/',
     
     // Force dark mode by default
     //appearance: 'dark',
     
     head: [
-      ['link', { rel: 'icon', href: '/gemini-mcp-tool-patched/favicon.ico' }],
-      ['link', { rel: 'icon', type: 'image/png', sizes: '128x128', href: '/gemini-mcp-tool-patched/icon.png' }],
-      ['link', { rel: 'apple-touch-icon', sizes: '128x128', href: '/gemini-mcp-tool-patched/icon.png' }]
+      ['link', { rel: 'icon', href: '/gemini-mcp-ultimate/favicon.ico' }],
+      ['link', { rel: 'icon', type: 'image/png', sizes: '128x128', href: '/gemini-mcp-ultimate/icon.png' }],
+      ['link', { rel: 'apple-touch-icon', sizes: '128x128', href: '/gemini-mcp-ultimate/icon.png' }]
     ],
     
     themeConfig: {
@@ -66,7 +66,7 @@ export default withMermaid(
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/GlitterKill/gemini-mcp-tool-patched' }
+      { icon: 'github', link: 'https://github.com/GlitterKill/gemini-mcp-ultimate' }
     ],
 
     footer: {

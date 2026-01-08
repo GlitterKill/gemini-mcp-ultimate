@@ -38,14 +38,14 @@ If you still get "command not found", restart your terminal or add npm global bi
 
 ```bash
 # Method 1: Install globally first
-npm install -g gemini-mcp-tool-patched
+npm install -g gemini-mcp-ultimate
 claude mcp add gemini-cli -- gemini-mcp-patched
 
 # Method 2: Use --yes instead of -y
-claude mcp add gemini-cli -- npx --yes gemini-mcp-tool-patched
+claude mcp add gemini-cli -- npx --yes gemini-mcp-ultimate
 
 # Method 3: Remove the -y flag entirely
-claude mcp add gemini-cli -- npx gemini-mcp-tool-patched
+claude mcp add gemini-cli -- npx gemini-mcp-ultimate
 ```
 
 </TroubleshootingModal>
@@ -162,8 +162,8 @@ node --version
 gemini "Hello"
 
 # 3. Reinstall if needed
-npm uninstall -g gemini-mcp-tool-patched
-npm install -g gemini-mcp-tool-patched
+npm uninstall -g gemini-mcp-ultimate
+npm install -g gemini-mcp-ultimate
 
 # 4. Verify Claude Code can find the command
 claude mcp list
@@ -285,7 +285,7 @@ Enable debug logging:
 
 ## Getting Help
 
-1. Check [GitHub Issues](https://github.com/GlitterKill/gemini-mcp-tool-patched/issues)
+1. Check [GitHub Issues](https://github.com/GlitterKill/gemini-mcp-ultimate/issues)
 2. Enable debug mode
 3. Collect error logs
 4. Open a new issue with details
@@ -316,8 +316,8 @@ Enable debug logging:
 ### Reset Everything
 ```bash
 # Remove and reinstall
-npm uninstall -g gemini-mcp-tool-patched
-npm install -g gemini-mcp-tool-patched
+npm uninstall -g gemini-mcp-ultimate
+npm install -g gemini-mcp-ultimate
 
 # Reset Gemini CLI
 gemini config reset

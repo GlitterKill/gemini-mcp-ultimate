@@ -127,7 +127,7 @@ By bridging Claude Desktop with Google's powerful models, Gemini MCP Tool lets y
 ## More Questions?
 
 - Check [Documentation](/)
-- Browse [GitHub Issues](https://github.com/GlitterKill/gemini-mcp-tool-patched/issues)
-- Ask in [Discussions](https://github.com/GlitterKill/gemini-mcp-tool-patched/discussions)
+- Browse [GitHub Issues](https://github.com/GlitterKill/gemini-mcp-ultimate/issues)
+- Ask in [Discussions](https://github.com/GlitterKill/gemini-mcp-ultimate/discussions)
 
 

@@ -31,12 +31,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GlitterKill/gemini-mcp-tool-patched.git"
+    "url": "git+https://github.com/GlitterKill/gemini-mcp-ultimate.git"
   },
   "bugs": {
-    "url": "https://github.com/GlitterKill/gemini-mcp-tool-patched/issues"
+    "url": "https://github.com/GlitterKill/gemini-mcp-ultimate/issues"
   },
-  "homepage": "https://github.com/GlitterKill/gemini-mcp-tool-patched#readme",
+  "homepage": "https://github.com/GlitterKill/gemini-mcp-ultimate#readme",
   "engines": {
     "node": ">=16.0.0"
   },

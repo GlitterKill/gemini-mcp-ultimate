@@ -35,7 +35,7 @@
         </a>
 
         <a 
-          href="https://github.com/GlitterKill/gemini-mcp-tool-patched" 
+          href="https://github.com/GlitterKill/gemini-mcp-ultimate" 
           target="_blank"
           rel="noopener"
           class="action-button action-primary"

@@ -17,7 +17,7 @@ No installation needed - runs directly:
   "mcpServers": {
     "gemini-cli": {
       "command": "npx",
-      "args": ["-y", "gemini-mcp-tool-patched"]
+      "args": ["-y", "gemini-mcp-ultimate"]
     }
   }
 }
@@ -26,7 +26,7 @@ No installation needed - runs directly:
 ## Method 2: Global Installation
 
 ```bash
-npm install -g gemini-mcp-tool-patched
+npm install -g gemini-mcp-ultimate
 ```
 
 Then configure:
@@ -43,7 +43,7 @@ Then configure:
 ## Method 3: Local Project
 
 ```bash
-npm install gemini-mcp-tool-patched
+npm install gemini-mcp-ultimate
 ```
 
 See [Getting Started](/getting-started) for full setup instructions.

@@ -21,16 +21,16 @@ fi
 # Clone the wiki repository
 echo "📥 Cloning wiki repository..."
 rm -rf .wiki-temp
-git clone https://github.com/GlitterKill/gemini-mcp-tool-patched.wiki.git .wiki-temp 2>/dev/null || {
+git clone https://github.com/GlitterKill/gemini-mcp-ultimate.wiki.git .wiki-temp 2>/dev/null || {
     echo "⚠️  Wiki doesn't exist yet. Creating it through GitHub..."
     # Create initial wiki page through API
-    gh api repos/GlitterKill/gemini-mcp-tool-patched/wiki/pages \
+    gh api repos/GlitterKill/gemini-mcp-ultimate/wiki/pages \
         --method POST \
         -f title="Home" \
         -f body="Initializing wiki..." || true
     
     # Try cloning again
-    git clone https://github.com/GlitterKill/gemini-mcp-tool-patched.wiki.git .wiki-temp
+    git clone https://github.com/GlitterKill/gemini-mcp-ultimate.wiki.git .wiki-temp
 }
 
 cd .wiki-temp
@@ -98,18 +98,18 @@ cat > _Sidebar.md << 'EOF'
 ---
 
 **Quick Links**
-* [📦 NPM Package](https://www.npmjs.com/package/gemini-mcp-tool-patched)
-* [🐙 GitHub Repo](https://github.com/GlitterKill/gemini-mcp-tool-patched)
-* [📋 Report Issue](https://github.com/GlitterKill/gemini-mcp-tool-patched/issues/new)
+* [📦 NPM Package](https://www.npmjs.com/package/gemini-mcp-ultimate)
+* [🐙 GitHub Repo](https://github.com/GlitterKill/gemini-mcp-ultimate)
+* [📋 Report Issue](https://github.com/GlitterKill/gemini-mcp-ultimate/issues/new)
 EOF
 
 # Create footer
 cat > _Footer.md << 'EOF'
 ---
-📄 [MIT License](https://github.com/GlitterKill/gemini-mcp-tool-patched/blob/main/LICENSE) | 
-🔧 [Contribute](https://github.com/GlitterKill/gemini-mcp-tool-patched/blob/main/CONTRIBUTING.md) | 
-📦 [NPM](https://www.npmjs.com/package/gemini-mcp-tool-patched) |
-⭐ [Star on GitHub](https://github.com/GlitterKill/gemini-mcp-tool-patched)
+📄 [MIT License](https://github.com/GlitterKill/gemini-mcp-ultimate/blob/main/LICENSE) | 
+🔧 [Contribute](https://github.com/GlitterKill/gemini-mcp-ultimate/blob/main/CONTRIBUTING.md) | 
+📦 [NPM](https://www.npmjs.com/package/gemini-mcp-ultimate) |
+⭐ [Star on GitHub](https://github.com/GlitterKill/gemini-mcp-ultimate)
 EOF
 
 # Commit and push
@@ -129,7 +129,7 @@ cd ..
 rm -rf .wiki-temp
 
 echo "✅ Wiki deployed successfully!"
-echo "🔗 View at: https://github.com/GlitterKill/gemini-mcp-tool-patched/wiki"
+echo "🔗 View at: https://github.com/GlitterKill/gemini-mcp-ultimate/wiki"
 echo ""
 echo "📝 Note: It may take a few seconds for changes to appear on GitHub."
 

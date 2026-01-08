@@ -37,13 +37,13 @@ Before installing, ensure you have:
 
 
 ## Claude Code (Recommended)
-::: warning 💡 gemini-mcp-tool-patched is tested extensively with claude code
+::: warning 💡 gemini-mcp-ultimate is tested extensively with claude code
 :::
 Claude Code offers the smoothest experience.
 
 ```bash
 # install for claude code
-claude mcp add gemini-cli -- npx -y gemini-mcp-tool-patched
+claude mcp add gemini-cli -- npx -y gemini-mcp-ultimate
 
 # Start Claude Code - it's automatically configured!
 claude
@@ -72,7 +72,7 @@ For Claude Desktop users, add this to your configuration file:
   "mcpServers": {
     "gemini-cli": {
       "command": "npx",
-      "args": ["-y", "gemini-mcp-tool-patched"]
+      "args": ["-y", "gemini-mcp-ultimate"]
     }
   }
 }
@@ -91,7 +91,7 @@ Gemini MCP Tool works with 40+ MCP clients! Here are the common configuration pa
   "transport": {
     "type": "stdio",
     "command": "npx",
-    "args": ["-y", "gemini-mcp-tool-patched"]
+    "args": ["-y", "gemini-mcp-ultimate"]
   }
 }
 ```
@@ -109,7 +109,7 @@ Gemini MCP Tool works with 40+ MCP clients! Here are the common configuration pa
     "command": "npx",
     "args": [
       "-y",
-      "gemini-mcp-tool-patched"
+      "gemini-mcp-ultimate"
     ],
     "env": {},
     "working_directory": null,
@@ -202,7 +202,7 @@ Now that you're set up:
 - Join the community for support
 
 ::: info Need Help?
-If you run into issues, [open an issue](https://github.com/GlitterKill/gemini-mcp-tool-patched/issues) on GitHub.
+If you run into issues, [open an issue](https://github.com/GlitterKill/gemini-mcp-ultimate/issues) on GitHub.
 :::
 
 

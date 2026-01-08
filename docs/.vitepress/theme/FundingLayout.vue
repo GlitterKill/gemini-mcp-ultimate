@@ -44,7 +44,7 @@ const goBack = () => {
   if (window.history.length > 1) {
     window.history.back()
   } else {
-    router.go('/gemini-mcp-tool-patched/')
+    router.go('/gemini-mcp-ultimate/')
   }
 }
 
