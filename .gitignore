@@ -9,6 +9,9 @@ dist/
 .idea/
 .npmignore
 
+# Tool/Editor Configs
+.claude/
+.github/
 
 # Docs Site
 docs/.vitepress/cache/
