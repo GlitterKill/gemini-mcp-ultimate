@@ -17,48 +17,32 @@ function buildBrainstormPrompt(config: {
   // Select methodology framework
   let frameworkInstructions = getMethodologyInstructions(methodology, domain);
   
-  let enhancedPrompt = `# BRAINSTORMING SESSION
+  // Build context parts
+  const contextParts: string[] = [];
+  if (domain) contextParts.push(`Domain: ${domain}`);
+  if (constraints) contextParts.push(`Constraints: ${constraints}`);
+  if (existingContext) contextParts.push(`Background: ${existingContext}`);
 
-## Core Challenge
-${prompt}
+  const contextSection = contextParts.length > 0
+    ? `\n\nContext to consider:\n${contextParts.map(p => `- ${p}`).join('\n')}`
+    : '';
 
-## Methodology Framework
-${frameworkInstructions}
+  const analysisInstructions = includeAnalysis
+    ? ' For each idea, also rate Feasibility (1-5), Impact (1-5), and Innovation (1-5), with a one-sentence assessment.'
+    : '';
 
-## Context Engineering
-*Use the following context to inform your reasoning:*
-${domain ? `**Domain Focus:** ${domain} - Apply domain-specific knowledge, terminology, and best practices.` : ''}
-${constraints ? `**Constraints & Boundaries:** ${constraints}` : ''}
-${existingContext ? `**Background Context:** ${existingContext}` : ''}
+  // Use conversational format to avoid triggering Gemini CLI extensions
+  // Keep challenge inline (not on separate line) to prevent conductor extension interception
+  let enhancedPrompt = `Please brainstorm ${ideaCount} creative ideas for: "${prompt}"
 
-## Output Requirements
-- Generate ${ideaCount} distinct, creative ideas
-- Each idea should be unique and non-obvious
+${frameworkInstructions}${contextSection}
+
+Requirements:
+- Each idea must be unique and non-obvious
 - Focus on actionable, implementable concepts
-- Use clear, descriptive naming
-- Provide brief explanations for each idea
+- Give each idea a creative name and 2-3 sentence description${analysisInstructions}
 
-${includeAnalysis ? `
-## Analysis Framework
-For each idea, provide:
-- **Feasibility:** Implementation difficulty (1-5 scale)
-- **Impact:** Potential value/benefit (1-5 scale)
-- **Innovation:** Uniqueness/creativity (1-5 scale)
-- **Quick Assessment:** One-sentence evaluation
-` : ''}
-
-## Format
-Present ideas in a structured format:
-
-### Idea [N]: [Creative Name]
-**Description:** [2-3 sentence explanation]
-${includeAnalysis ? '**Feasibility:** [1-5] | **Impact:** [1-5] | **Innovation:** [1-5]\n**Assessment:** [Brief evaluation]' : ''}
-
----
-
-**Before finalizing, review the list: remove near-duplicates and ensure each idea satisfies the constraints.**
-
-Begin brainstorming session:`;
+Format each idea as: "Idea N: [Name]" followed by the description${includeAnalysis ? ' and ratings' : ''}.`;
 
   return enhancedPrompt;
 }
@@ -68,48 +52,17 @@ Begin brainstorming session:`;
  */
 function getMethodologyInstructions(methodology: string, domain?: string): string {
   const methodologies: Record<string, string> = {
-    'divergent': `**Divergent Thinking Approach:**
-- Generate maximum quantity of ideas without self-censoring
-- Build on wild or seemingly impractical ideas
-- Combine unrelated concepts for unexpected solutions
-- Use "Yes, and..." thinking to expand each concept
-- Postpone evaluation until all ideas are generated`,
+    'divergent': `Use Divergent Thinking: Generate maximum quantity of ideas without self-censoring, build on wild ideas, combine unrelated concepts, use "Yes, and..." thinking, postpone evaluation until all ideas are generated.`,
 
-    'convergent': `**Convergent Thinking Approach:**
-- Focus on refining and improving existing concepts
-- Synthesize related ideas into stronger solutions
-- Apply critical evaluation criteria
-- Prioritize based on feasibility and impact
-- Develop implementation pathways for top ideas`,
+    'convergent': `Use Convergent Thinking: Focus on refining and improving existing concepts, synthesize related ideas into stronger solutions, apply critical evaluation, prioritize by feasibility and impact.`,
 
-    'scamper': `**SCAMPER Creative Triggers:**
-- **Substitute:** What can be substituted or replaced?
-- **Combine:** What can be combined or merged?
-- **Adapt:** What can be adapted from other domains?
-- **Modify:** What can be magnified, minimized, or altered?
-- **Put to other use:** How else can this be used?
-- **Eliminate:** What can be removed or simplified?
-- **Reverse:** What can be rearranged or reversed?`,
+    'scamper': `Use SCAMPER triggers: Substitute (what can be replaced?), Combine (what can be merged?), Adapt (from other domains?), Modify (magnify or minimize?), Put to other use, Eliminate (simplify?), Reverse (rearrange?).`,
 
-    'design-thinking': `**Human-Centered Design Thinking:**
-- **Empathize:** Consider user needs, pain points, and contexts
-- **Define:** Frame problems from user perspective
-- **Ideate:** Generate user-focused solutions
-- **Consider Journey:** Think through complete user experience
-- **Prototype Mindset:** Focus on testable, iterative concepts`,
+    'design-thinking': `Use Design Thinking: Empathize with user needs and pain points, define problems from user perspective, ideate user-focused solutions, consider the complete user journey, focus on testable concepts.`,
 
-    'lateral': `**Lateral Thinking Approach:**
-- Make unexpected connections between unrelated fields
-- Challenge fundamental assumptions
-- Use random word association to trigger new directions
-- Apply metaphors and analogies from other domains
-- Reverse conventional thinking patterns`,
+    'lateral': `Use Lateral Thinking: Make unexpected connections between unrelated fields, challenge fundamental assumptions, use random word association, apply metaphors from other domains, reverse conventional patterns.`,
 
-    'auto': `**AI-Optimized Approach:**
-${domain ? `Given the ${domain} domain, I'll apply the most effective combination of:` : 'I\'ll intelligently combine multiple methodologies:'}
-- Divergent exploration with domain-specific knowledge
-- SCAMPER triggers and lateral thinking
-- Human-centered perspective for practical value`
+    'auto': `${domain ? `For the ${domain} domain, combine` : 'Combine'} divergent exploration, SCAMPER triggers, lateral thinking, and human-centered perspective for practical value.`
   };
 
   return methodologies[methodology] || methodologies['auto'];

@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.1] - Windows Compatibility & Documentation
+
+### Fixed
+- **Positional Prompts**: Migrated from deprecated `-p` flag to positional prompts for future Gemini CLI compatibility
+- **Brainstorm Tool**: Fixed prompt format that was triggering Gemini CLI conductor extension interception
+- **Windows PATH Resolution**: Enhanced `commandExecutor.ts` with multi-location PATH search for nvm-windows users
+
+### Changed
+- Removed deprecated `PROMPT` constant from CLI flags
+- Simplified brainstorm methodology instructions to plain text (removed markdown bold formatting)
+
+### Documentation
+- Comprehensive README rewrite with detailed installation instructions
+- Platform-specific guides for Windows (PowerShell) and Linux/macOS
+- Token savings examples with concrete numbers (98-99% savings demonstrated)
+- Complete tools reference with parameter tables
+- Windows troubleshooting section with PowerShell diagnostic commands
+- Technical explanation of Windows `.cmd` file execution fix
+
 ## [2.0.0] - Ultimate Release
 - **New Branding**: Renamed to `gemini-mcp-ultimate`.
 - **Token Conservation**: Introduced "External Memory" pattern via Sessions.

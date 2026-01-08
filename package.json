@@ -1,6 +1,6 @@
 {
   "name": "gemini-mcp-ultimate",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "The Ultimate MCP server for Gemini CLI - featuring Session Management, Extensions, and Token-Saving workflows",
   "type": "module",
   "main": "dist/index.js",

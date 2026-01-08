@@ -68,7 +68,6 @@ export const CLI = {
   FLAGS: {
     MODEL: "-m",
     SANDBOX: "-s",
-    PROMPT: "-p",
     HELP: "-help",
   },
   // Default values
