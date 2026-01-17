@@ -19,29 +19,56 @@ import {
 import { Logger } from "./utils/logger.js";
 import { PROTOCOL, ToolArguments } from "./constants.js";
 
-import { 
-  getToolDefinitions, 
-  getPromptDefinitions, 
-  executeTool, 
-  toolExists, 
-  getPromptMessage 
+import {
+  getToolDefinitions,
+  getPromptDefinitions,
+  executeTool,
+  toolExists,
+  getPromptMessage
 } from "./tools/index.js";
+
+/**
+ * MCP request metadata - includes optional progressToken for progress notifications
+ */
+interface MCPRequestMeta {
+  progressToken?: string | number;
+}
+
+/**
+ * Extended MCP request params with _meta field
+ */
+interface MCPCallToolParams {
+  name: string;
+  arguments?: Record<string, unknown>;
+  _meta?: MCPRequestMeta;
+}
+
+/**
+ * Progress notification params as per MCP protocol
+ */
+interface ProgressNotificationParams {
+  progressToken: string | number;
+  progress: number;
+  total?: number;
+  message?: string;
+}
 
 const server = new Server(
   {
     name: "gemini-mcp-ultimate",
-    version: "2.0.0",
+    version: "2.0.3",
   },{
     capabilities: {
       tools: {},
       prompts: {},
-      notifications: {},
       logging: {},
     },
   },
 );
 
-let isProcessing = false; let currentOperationName = ""; let latestOutput = "";
+let isProcessing = false;
+let currentOperationName = "";
+let latestOutput = "";
 
 async function sendNotification(method: string, params: any) {
   try {
@@ -64,22 +91,42 @@ async function sendProgressNotification(
   message?: string
 ) {
   if (!progressToken) return; // Only send if client requested progress
-  
+
   try {
-    const params: any = {
+    const params: ProgressNotificationParams = {
       progressToken,
       progress
     };
-    
-    if (total !== undefined) params.total = total; // future cache progress
+
+    if (total !== undefined) params.total = total;
     if (message) params.message = message;
-    
+
     await server.notification({
       method: PROTOCOL.NOTIFICATIONS.PROGRESS,
       params
     });
   } catch (error) {
     Logger.error("Failed to send progress notification:", error);
+  }
+}
+
+/**
+ * Send a logging notification as a keepalive for clients that don't support progressToken.
+ * This prevents clients like Codex CLI from timing out during long operations.
+ */
+async function sendLoggingKeepalive(message: string) {
+  try {
+    await server.notification({
+      method: "notifications/message",
+      params: {
+        level: "info",
+        logger: "gemini-mcp-ultimate",
+        data: message
+      }
+    });
+  } catch (error) {
+    // Silently ignore - some clients may not support logging notifications
+    // The important thing is we tried to send something
   }
 }
 
@@ -90,7 +137,7 @@ function startProgressUpdates(
   isProcessing = true;
   currentOperationName = operationName;
   latestOutput = ""; // Reset latest output
-  
+
   const progressMessages = [
     `🧠 ${operationName} - Gemini is analyzing your request...`,
     `📊 ${operationName} - Processing files and generating insights...`,
@@ -98,11 +145,11 @@ function startProgressUpdates(
     `⏱️ ${operationName} - Large analysis in progress (this is normal for big requests)...`,
     `🔍 ${operationName} - Still working... Gemini takes time for quality results...`,
   ];
-  
+
   let messageIndex = 0;
   let progress = 0;
-  
-  // Send immediate acknowledgment if progress requested
+
+  // Send immediate acknowledgment
   if (progressToken) {
     sendProgressNotification(
       progressToken,
@@ -110,33 +157,43 @@ function startProgressUpdates(
       undefined, // No total - indeterminate progress
       `🔍 Starting ${operationName}`
     );
+  } else {
+    // For clients without progressToken support (e.g., Codex CLI),
+    // send a logging notification as initial keepalive
+    sendLoggingKeepalive(`🔍 Starting ${operationName}`);
   }
-  
+
   // Keep client alive with periodic updates
   const progressInterval = setInterval(async () => {
-    if (isProcessing && progressToken) {
+    if (isProcessing) {
       // Simply increment progress value
       progress += 1;
-      
+
       // Include latest output if available
       const baseMessage = progressMessages[messageIndex % progressMessages.length];
       const outputPreview = latestOutput.slice(-150).trim(); // Last 150 chars
-      const message = outputPreview 
+      const message = outputPreview
         ? `${baseMessage}\n📝 Output: ...${outputPreview}`
         : baseMessage;
-      
-      await sendProgressNotification(
-        progressToken,
-        progress,
-        undefined, // No total - indeterminate progress
-        message
-      );
+
+      if (progressToken) {
+        // Client supports progress notifications
+        await sendProgressNotification(
+          progressToken,
+          progress,
+          undefined, // No total - indeterminate progress
+          message
+        );
+      } else {
+        // Fallback: send logging notification as keepalive for clients like Codex CLI
+        await sendLoggingKeepalive(message);
+      }
       messageIndex++;
-    } else if (!isProcessing) {
+    } else {
       clearInterval(progressInterval);
     }
-  }, PROTOCOL.KEEPALIVE_INTERVAL); // Every 25 seconds
-  
+  }, PROTOCOL.KEEPALIVE_INTERVAL); // Every 15 seconds (see constants.ts)
+
   return { interval: progressInterval, progressToken };
 }
 
@@ -148,15 +205,22 @@ function stopProgressUpdates(
   isProcessing = false;
   currentOperationName = "";
   clearInterval(progressData.interval);
-  
-  // Send final progress notification if client requested progress
+
+  const finalMessage = success
+    ? `✅ ${operationName} completed successfully`
+    : `❌ ${operationName} failed`;
+
+  // Send final notification
   if (progressData.progressToken) {
     sendProgressNotification(
       progressData.progressToken,
       100,
       100,
-      success ? `✅ ${operationName} completed successfully` : `❌ ${operationName} failed`
+      finalMessage
     );
+  } else {
+    // Send final logging keepalive for clients without progressToken support
+    sendLoggingKeepalive(finalMessage);
   }
 }
 
@@ -171,7 +235,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 
   if (toolExists(toolName)) {
     // Check if client requested progress updates
-    const progressToken = (request.params as any)._meta?.progressToken;
+    const progressToken = (request.params as MCPCallToolParams)._meta?.progressToken;
     
     // Start progress updates if client requested them
     const progressData = startProgressUpdates(toolName, progressToken);
@@ -253,6 +317,12 @@ server.setRequestHandler(GetPromptRequestSchema, async (request: GetPromptReques
 // Start the server
 async function main() {
   Logger.debug("init gemini-mcp-ultimate");
-  const transport = new StdioServerTransport(); await server.connect(transport);
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
   Logger.debug("gemini-mcp-ultimate listening on stdio");
-} main().catch((error) => {Logger.error("Fatal error:", error); process.exit(1); }); 
+}
+
+main().catch((error) => {
+  Logger.error("Fatal error:", error);
+  process.exit(1);
+}); 

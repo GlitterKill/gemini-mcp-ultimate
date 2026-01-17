@@ -1,4 +1,5 @@
 import { ChangeModeEdit } from './changeModeParser.js';
+import { Logger } from './logger.js';
 
 export interface EditChunk {
   edits: ChangeModeEdit[];
@@ -9,7 +10,8 @@ export interface EditChunk {
 }
 
 function estimateEditSize(edit: ChangeModeEdit): number {
-  const jsonOverhead = 250; const contentSize = edit.filename.length * 2 + edit.oldCode.length + edit.newCode.length;
+  const jsonOverhead = 250;
+  const contentSize = edit.filename.length * 2 + edit.oldCode.length + edit.newCode.length;
   return jsonOverhead + contentSize;
 }
 
@@ -51,13 +53,18 @@ export function chunkChangeModeEdits(
       }
       for (const edit of fileEdits) {
         const editSize = estimateEditSize(edit);
-        
+
+        // Warn if a single edit exceeds chunk size (will create oversized chunk)
+        if (editSize > maxCharsPerChunk) {
+          Logger.warn(`Large edit for ${edit.filename} (${editSize} chars) exceeds chunk limit (${maxCharsPerChunk})`);
+        }
+
         if (currentSize + editSize > maxCharsPerChunk && currentChunk.length > 0) {
           chunks.push(createChunk(currentChunk, chunks.length + 1, 0, currentSize));
           currentChunk = [];
           currentSize = 0;
         }
-        
+
         currentChunk.push(edit);
         currentSize += editSize;
       }

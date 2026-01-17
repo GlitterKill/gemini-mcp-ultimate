@@ -56,7 +56,7 @@ A specialized tool for creative ideation.
 
 ### Models
 *   **Pro**: `gemini-3-pro-preview`
-*   **Flash**: `gemini-3-flash`
+*   **Flash**: `gemini-3-flash-preview`
 
 ### Errors
 *   `QUOTA_EXCEEDED`: Automatically falls back to Flash model.

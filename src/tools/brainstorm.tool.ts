@@ -70,12 +70,12 @@ function getMethodologyInstructions(methodology: string, domain?: string): strin
 
 const brainstormArgsSchema = z.object({
   prompt: z.string().min(1).describe("Primary brainstorming challenge or question to explore"),
-  model: z.string().optional().describe("Optional model to use (e.g., 'gemini-2.5-flash'). If not specified, uses the default model (gemini-2.5-pro)."),
+  model: z.string().optional().describe("Optional model to use (e.g., 'gemini-3-flash-preview'). If not specified, uses the default model (gemini-3-pro-preview)."),
   methodology: z.enum(['divergent', 'convergent', 'scamper', 'design-thinking', 'lateral', 'auto']).default('auto').describe("Brainstorming framework: 'divergent' (generate many ideas), 'convergent' (refine existing), 'scamper' (systematic triggers), 'design-thinking' (human-centered), 'lateral' (unexpected connections), 'auto' (AI selects best)"),
   domain: z.string().optional().describe("Domain context for specialized brainstorming (e.g., 'software', 'business', 'creative', 'research', 'product', 'marketing')"),
   constraints: z.string().optional().describe("Known limitations, requirements, or boundaries (budget, time, technical, legal, etc.)"),
   existingContext: z.string().optional().describe("Background information, previous attempts, or current state to build upon"),
-  ideaCount: z.number().int().positive().default(12).describe("Target number of ideas to generate (default: 10-15)"),
+  ideaCount: z.number().int().positive().max(100).default(12).describe("Target number of ideas to generate (default: 12, max: 100)"),
   includeAnalysis: z.boolean().default(true).describe("Include feasibility, impact, and implementation analysis for generated ideas"),
 });
 

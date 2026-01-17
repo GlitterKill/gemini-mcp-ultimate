@@ -4,6 +4,20 @@ import { join } from "path";
 import { Logger } from "./logger.js";
 
 /**
+ * Common Node.js LTS versions for nvm path resolution.
+ * Updated: January 2025. Add new LTS versions as they release.
+ */
+const COMMON_NODE_VERSIONS = [
+  'v22.12.0',
+  'v22.11.0',
+  'v20.18.0',
+  'v20.17.0',
+  'v20.10.0',
+  'v18.20.0',
+  'v18.19.0',
+] as const;
+
+/**
  * Get additional PATH entries for Windows npm/node locations.
  * The MCP server may not inherit standard user PATH entries.
  * Supports: standard Node.js, nvm-windows (coreybutler), nvm4windows, and custom installations.
@@ -28,10 +42,8 @@ function getWindowsNodePaths(): string[] {
 
   // Priority 2: NVM_HOME - search for installed versions
   if (nvmHome) {
-    // Add common/recent Node.js LTS versions
-    const commonVersions = ['v24.12.0', 'v22.21.1', 'v22.12.0', 'v20.18.0', 'v20.10.0', 'v18.20.0', 'v18.19.0'];
-    for (const v of commonVersions) {
-      paths.push(join(nvmHome, v));
+    for (const version of COMMON_NODE_VERSIONS) {
+      paths.push(join(nvmHome, version));
     }
     Logger.debug(`Added NVM_HOME version paths from: ${nvmHome}`);
   }
@@ -44,9 +56,8 @@ function getWindowsNodePaths(): string[] {
   // Priority 4: Fallback to LOCALAPPDATA nvm location (older nvm-windows default)
   if (localAppData && !nvmHome) {
     const nvmDir = join(localAppData, 'nvm');
-    const commonVersions = ['v24.12.0', 'v22.21.1', 'v22.12.0', 'v20.18.0', 'v20.10.0', 'v18.20.0', 'v18.19.0'];
-    for (const v of commonVersions) {
-      paths.push(join(nvmDir, v));
+    for (const version of COMMON_NODE_VERSIONS) {
+      paths.push(join(nvmDir, version));
     }
   }
 
@@ -91,7 +102,6 @@ export async function executeCommand(
     // Windows-compatible command execution
     let spawnCommand = command;
     let spawnArgs = args;
-    let useShell = false;
 
     if (process.platform === 'win32') {
       // Use cmd.exe to execute commands on Windows
@@ -139,7 +149,7 @@ export async function executeCommand(
 
     const childProcess = spawn(spawnCommand, spawnArgs, {
       env: spawnEnv,
-      shell: useShell,
+      shell: false,
       stdio: ["ignore", "pipe", "pipe"],
     });
 
@@ -163,7 +173,7 @@ export async function executeCommand(
     // CLI level errors
     childProcess.stderr.on("data", (data) => {
       stderr += data.toString();
-      // find RESOURCE_EXHAUSTED when gemini-2.5-pro quota is exceeded
+      // find RESOURCE_EXHAUSTED when gemini-3-pro-preview quota is exceeded
       if (stderr.includes("RESOURCE_EXHAUSTED")) {
         const modelMatch = stderr.match(/Quota exceeded for quota metric '([^']+)'/);
         const statusMatch = stderr.match(/status["\s]*[:=]\s*(\d+)/);
@@ -178,7 +188,7 @@ export async function executeCommand(
             details: {
               model: model,
               reason: reason,
-              statusText: "Too Many Requests -- > try using gemini-2.5-flash by asking",
+              statusText: "Too Many Requests -- > try using gemini-3-flash-preview by asking",
             }
           }
         };

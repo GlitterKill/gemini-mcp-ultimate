@@ -121,7 +121,7 @@ claude mcp add gemini-cli -- npx gemini-mcp-ultimate
 
 2. **Switch to Gemini Flash for faster responses**:
    ```bash
-   gemini config set model gemini-2.5-flash
+   gemini config set model gemini-3-flash-preview
    ```
 
 3. **Break up large requests into smaller chunks**:
@@ -191,7 +191,7 @@ claude mcp list
 # "🧠 Gemini is analyzing your request..."
 
 # Use faster Flash model for large requests
-/gemini-cli:analyze -m gemini-2.5-flash @large-file.js
+/gemini-cli:analyze -m gemini-3-flash-preview @large-file.js
 
 # Break up large analysis into smaller chunks
 /gemini-cli:analyze @specific-function.js explain this function
@@ -264,7 +264,7 @@ echo $GOOGLE_GENERATIVE_AI_API_KEY
 **For very large codebases** (10,000+ files):
 - Consider breaking analysis into smaller chunks
 - Use more specific file patterns with `@` syntax
-- Switch to `gemini-2.5-flash` for faster processing
+- Switch to `gemini-3-flash-preview` for faster processing
 ```
 
 ## Debug Mode

@@ -2,14 +2,20 @@
 
 <div align="center">
 
+<img src="assets/mascot.webp" alt="Gemini MCP Ultimate Mascot" width="200">
+
 ![Gemini MCP Ultimate](https://img.shields.io/badge/Gemini_MCP-Ultimate-886FBF?style=for-the-badge&logo=googlegemini&logoColor=white)
-![Version](https://img.shields.io/badge/Version-2.0.1-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-2.0.3-green?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?style=for-the-badge)
+![Node](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![npm](https://img.shields.io/npm/v/gemini-mcp-ultimate?style=for-the-badge&color=CB3837&logo=npm)
 
 **The Ultimate Model Context Protocol (MCP) Server for Gemini CLI**
 
-*Supercharge Claude with Google's Gemini Pro, massive context windows, and persistent sessions.*
+*Supercharge Claude with Google's Gemini 3 Pro, massive 1M+ token context windows, and persistent sessions.*
+
+[Installation](#installation) • [Usage](#usage-examples) • [Tools](#tools-reference) • [Troubleshooting](#troubleshooting)
 
 </div>
 
@@ -263,7 +269,7 @@ The primary tool for interacting with Gemini CLI.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `prompt` | string | required | Your query. Use `@filename` to include files. |
-| `model` | string | `gemini-3-pro-preview` | Model to use. Falls back to `gemini-3-flash` on quota errors. |
+| `model` | string | `gemini-3-pro-preview` | Model to use. Falls back to `gemini-3-flash-preview` on quota errors. |
 | `session_id` | string/number | - | Resume a previous session by ID or index. |
 | `approval_mode` | string | `yolo` | `default`, `auto_edit`, or `yolo` for autonomy control. |
 | `sandbox` | boolean | `false` | Run in isolated sandbox environment. |
@@ -495,8 +501,8 @@ Then for deletion:
 3. Re-authenticate: `gemini` (follow prompts)
 
 **Quota exceeded errors:**
-- The server automatically falls back from `gemini-3-pro-preview` to `gemini-3-flash`
-- You can explicitly request flash: `model: "gemini-3-flash"`
+- The server automatically falls back from `gemini-3-pro-preview` to `gemini-3-flash-preview`
+- You can explicitly request flash: `model: "gemini-3-flash-preview"`
 
 ### Windows Troubleshooting
 

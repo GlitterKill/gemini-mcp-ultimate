@@ -25,20 +25,19 @@ You can also append with '-m' or ask specifically with
 ### In Configuration
 ```json
 {
-    "mcpServers": {
-      "gemini-cli": {
-      "command": "gemini-mcp-patched",
-      "env": {
-        "GEMINI_MODEL": "gemini-1.5-flash"
-      }
+  "mcpServers": {
+    "gemini-mcp-ultimate": {
+      "command": "npx",
+      "args": ["-y", "gemini-mcp-ultimate"]
     }
   }
 }
 ```
 
-### Per Request (Coming Soon)
+### Per Request
+Use the `model` parameter with ask-gemini:
 ```
-/gemini-cli:analyze --model=flash @file.js quick review
+Use ask-gemini with prompt "@file.js quick review" and model "gemini-3-flash-preview"
 ```
 
 ## Model Comparison

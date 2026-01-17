@@ -1,25 +1,31 @@
-// WIP
 import { LOG_PREFIX } from "../constants.js";
 
+/**
+ * Structured logger for MCP server output.
+ * Uses stderr for all output to avoid interfering with MCP stdio protocol.
+ */
 export class Logger {
   private static formatMessage(message: string): string {
-    return `${LOG_PREFIX} ${message}` + "\n";
+    return `${LOG_PREFIX} ${message}`;
   }
 
-  static log(message: string, ...args: any[]): void {
-    console.warn(this.formatMessage(message), ...args);
-  }
-
-  static warn(message: string, ...args: any[]): void {
-    console.warn(this.formatMessage(message), ...args);
-  }
-
-  static error(message: string, ...args: any[]): void {
+  static log(message: string, ...args: unknown[]): void {
     console.error(this.formatMessage(message), ...args);
   }
 
-  static debug(message: string, ...args: any[]): void {
-    console.warn(this.formatMessage(message), ...args);
+  static warn(message: string, ...args: unknown[]): void {
+    console.error(this.formatMessage(`[WARN] ${message}`), ...args);
+  }
+
+  static error(message: string, ...args: unknown[]): void {
+    console.error(this.formatMessage(`[ERROR] ${message}`), ...args);
+  }
+
+  static debug(message: string, ...args: unknown[]): void {
+    // Debug messages only in development (check DEBUG env var)
+    if (process.env.DEBUG || process.env.GMCPT_DEBUG) {
+      console.error(this.formatMessage(`[DEBUG] ${message}`), ...args);
+    }
   }
 
   static toolInvocation(toolName: string, args: any): void {

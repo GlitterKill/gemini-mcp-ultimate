@@ -1,0 +1,8 @@
+# Assets Directory
+
+Place the mascot image here as `mascot.webp`.
+
+The mascot is referenced in README.md at line 5:
+```html
+<img src="assets/mascot.webp" alt="Gemini MCP Ultimate Mascot" width="200">
+```

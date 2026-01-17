@@ -6,7 +6,7 @@ export const LOG_PREFIX = "[GMCPT]";
 // Error messages
 export const ERROR_MESSAGES = {
   QUOTA_EXCEEDED: "Quota exceeded", // Generic detection for any model
-  QUOTA_EXCEEDED_SHORT: "⚠️ Gemini Pro quota exceeded. Please retry with model: 'gemini-3-flash'",
+  QUOTA_EXCEEDED_SHORT: "⚠️ Gemini Pro quota exceeded. Please retry with model: 'gemini-3-flash-preview'",
   TOOL_NOT_FOUND: "not found in registry",
   NO_PROMPT_PROVIDED: "Please provide a prompt for analysis. Use @ syntax to include files (e.g., '@largefile.js explain what this does') or ask general questions",
 } as const;
@@ -24,7 +24,7 @@ export const STATUS_MESSAGES = {
   PROCESSING_COMPLETE: "✅ Analysis completed successfully",
 } as const;
 
-// Models
+// Models - Gemini 3 preview models
 export const MODELS = {
   PRO: "gemini-3-pro-preview",
   FLASH: "gemini-3-flash-preview",
@@ -52,8 +52,8 @@ export const PROTOCOL = {
   NOTIFICATIONS: {
     PROGRESS: "notifications/progress",
   },
-  // Timeout prevention
-  KEEPALIVE_INTERVAL: 25000, // 25 seconds
+  // Timeout prevention - reduced from 25s to 15s to beat 60s client timeouts
+  KEEPALIVE_INTERVAL: 15000, // 15 seconds
 } as const;
 
 

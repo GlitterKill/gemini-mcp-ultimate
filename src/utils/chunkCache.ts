@@ -31,9 +31,9 @@ export function cacheChunks(prompt: string, chunks: EditChunk[]): string {
   ensureCacheDir();
   cleanExpiredFiles(); // Cleanup on each write
   
-  // Generate deterministic cache key from prompt
+  // Generate deterministic cache key from prompt (16 chars = 64-bit security)
   const promptHash = createHash('sha256').update(prompt).digest('hex');
-  const cacheKey = promptHash.slice(0, 8);
+  const cacheKey = promptHash.slice(0, 16);
   const filePath = path.join(CACHE_DIR, `${cacheKey}.json`);
   
   // Store with metadata
@@ -119,7 +119,7 @@ function cleanExpiredFiles(): void {
 }
 
 
- // maximum file count limit (FIFO) --> LRU?
+// Maximum file count limit - uses LRU eviction (oldest files removed first)
 
 function enforceFileLimits(): void {
   try {

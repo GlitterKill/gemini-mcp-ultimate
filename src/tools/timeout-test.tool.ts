@@ -25,7 +25,10 @@ export const timeoutTestTool: UnifiedTool = {
     for (let i = 1; i <= steps; i++) {
       await new Promise(resolve => setTimeout(resolve, stepDuration));
       const elapsed = Date.now() - startTime;
-      results.push(`Step ${i}/${steps} completed - Elapsed: ${Math.round(elapsed/1000)}s`);
+      const message = `Step ${i}/${steps} completed - Elapsed: ${Math.round(elapsed/1000)}s`;
+      results.push(message);
+      // Report progress to keep client alive during long operations
+      onProgress?.(message);
     }
     
     const totalElapsed = Date.now() - startTime;

@@ -1,18 +1,19 @@
 # First Steps
 
-Once installed, here's how to get started with Gemini MCP Tool.
+Once installed, here's how to get started with Gemini MCP Ultimate.
 
 ## Test Connection
 
+Use the ping tool to verify the MCP server is working:
 ```
-/gemini-cli:ping "Hello from Gemini!"
+Use the gemini-mcp-ultimate ping tool with message "Hello!"
 ```
 
 ## Basic File Analysis
 
-Analyze a single file:
+Analyze a single file using ask-gemini:
 ```
-/gemini-cli:analyze @README.md summarize this
+Use ask-gemini with prompt "@README.md summarize this"
 ```
 
 ## Natural Language Usage
@@ -24,9 +25,9 @@ Just ask naturally:
 
 ## Sandbox Testing
 
-Test code safely:
+Test code safely with sandbox mode:
 ```
-/gemini-cli:sandbox create a Python script that generates fibonacci numbers
+Use ask-gemini with prompt "create a Python fibonacci script" and sandbox: true
 ```
 
 ## Next Steps

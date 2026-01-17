@@ -3,7 +3,7 @@ import { UnifiedTool } from './registry.js';
 import { executeCommand } from '../utils/commandExecutor.js';
 
 const pingArgsSchema = z.object({
-  prompt: z.string().default('').describe("Message to echo "),
+  prompt: z.string().default('').describe("Message to echo back"),
 });
 
 export const pingTool: UnifiedTool = {
@@ -14,9 +14,10 @@ export const pingTool: UnifiedTool = {
     description: "Echo test message with structured response.",
   },
   category: 'simple',
-  execute: async (args, onProgress) => {
-    const message = args.prompt || args.message || "Pong!";
-    return executeCommand("echo", [message as string], onProgress);
+  execute: async (args) => {
+    // Return directly without spawning a process - more efficient
+    const message = (args.prompt as string)?.trim() || "Pong!";
+    return message;
   }
 };
 
